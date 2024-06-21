@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "charliermarsh.ruff",
+    "ms-python.pylint",
+    "ms-python.vscode-pylance",
+    "visualstudioexptteam.vscyarodeintellicode",
+    "github.vscode-pull-request-github",
+    "eamodio.gitlens"
+  ]
+}
