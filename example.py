@@ -30,18 +30,22 @@ async def main() -> None:
 
     # For constructing paramters from string values as documented
     # in Home Assistant https://www.home-assistant.io/integrations/nfandroidtv
-    notification_params = NotificationParams.from_dict(
-        {
-            "duration": "10",
-            "color": "red",
-            "fontsize": "small",
-            "position": "bottom-right",
-            "transparency": "25%",
-            "interrupt": 0,
-            "icon": {"path": ICON},
-            "image": {"url": IMAGE},
-        }
-    )
+    try:
+        notification_params = NotificationParams.from_dict(
+            {
+                "duration": "10",
+                "color": "red",
+                "fontsize": "small",
+                "position": "bottom-right",
+                "transparency": "25%",
+                "interrupt": 0,
+                "icon": {"path": ICON},
+                "image": {"url": IMAGE},
+            }
+        )
+    except ValueError as err:
+        _LOGGER.error(err)
+        return
     try:
         await notifier.async_send(
             "This is a notification message",

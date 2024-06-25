@@ -20,7 +20,7 @@ from .const import (
     Position,
     Transparency,
 )
-from .exceptions import ConnectError, InvalidImage
+from .exceptions import ConnectError, InvalidImage, InvalidImageData
 
 
 @dataclass
@@ -40,7 +40,7 @@ class ImageSource:
     @classmethod
     def from_url(
         cls,
-        url: str | None = None,
+        url: str,
         username: str | None = None,
         password: str | None = None,
         auth: str | None = None,
@@ -188,6 +188,8 @@ class NotificationParams:
                 _params["icon"] = ImageSource.from_path(icon["path"])
             elif isinstance(icon, dict) and "url" in icon:
                 _params["icon"] = ImageSource.from_url(**icon)
+            else:
+                raise InvalidImageData("Invalid icon data")
 
         if image := kwargs.get("image"):
             if isinstance(image, str):
@@ -198,7 +200,13 @@ class NotificationParams:
                 )
             elif isinstance(image, dict) and "path" in image:
                 _params["image"] = ImageSource.from_path(image["path"])
-            elif isinstance(image, dict) and "url" in image:
+            elif (
+                isinstance(image, dict)
+                and (url := image.get("url"))
+                and (url.startswith("http"))
+            ):
                 _params["image"] = ImageSource.from_url(**image)
+            else:
+                raise InvalidImageData("Invalid image data")
 
         return NotificationParams(**_params)

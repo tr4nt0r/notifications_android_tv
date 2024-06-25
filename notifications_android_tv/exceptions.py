@@ -15,3 +15,7 @@ class InvalidResponse(NotificationException):
 
 class InvalidImage(NotificationException):
     """Exception raised for invalid image."""
+
+
+class InvalidImageData(NotificationException):
+    """Exception raised for invalid image data is provided."""
